@@ -1,0 +1,69 @@
+# =============================================================================
+# config.yaml — Centralized configuration for the SAR Oil Spill Pipeline
+# =============================================================================
+# All hyperparameters, paths, and thresholds in one place.
+# Scripts currently read their own hardcoded values — this file serves as the
+# single source of truth for future refactoring and for judges reviewing the repo.
+# =============================================================================
+
+# ---- Data ----
+data:
+  dataset_dir: "./dataset"
+  images_subdir: "images"
+  masks_subdir: "mask oil"
+  manifest_path: "split_manifest.json"
+  split_ratios:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+
+# ---- Model Architecture ----
+model:
+  architecture: "Unet"
+  encoder: "resnet34"
+  encoder_weights: "imagenet"        # Used during training; set to null for inference
+  in_channels: 2                      # VV + VH dual-polarization SAR
+  num_classes: 5                      # sea surface, oil spill, look-alike, ship, land
+  oil_class_index: 1                  # Class label for oil spill
+
+# ---- Training ----
+training:
+  epochs: 20
+  batch_size: 2
+  learning_rate: 1.0e-4
+  loss_function: "DiceLoss"
+  loss_mode: "multiclass"
+  optimizer: "Adam"
+  use_amp: true                       # Automatic Mixed Precision (CUDA only)
+  seed: 42
+
+# ---- Input Processing ----
+preprocessing:
+  image_size: [256, 256]              # All images resized to this for batch collation
+  image_interpolation: "bilinear"
+  mask_interpolation: "nearest"       # Prevents class label blurring
+  normalization: "per_image_max"      # Preserves SAR speckle noise characteristics
+
+# ---- Augmentation ----
+augmentation:
+  enabled: true                       # Only applied to training split
+  horizontal_flip_prob: 0.5
+  vertical_flip_prob: 0.5
+
+# ---- Inference / Prediction ----
+inference:
+  noise_threshold_px: 50             # Minimum connected-component size to keep
+  batch_sample_count: 10             # Number of random test images to process
+  output_dir: "./reports"
+
+# ---- File Paths (Weights) ----
+paths:
+  best_model: "best_oilspill_model.pth"
+  checkpoint: "checkpoint_oilspill.pth"
+
+# ---- Hardware ----
+hardware:
+  tested_gpu: "NVIDIA RTX 4060 (8 GB VRAM)"
+  cuda_version: "12.1"
+  pytorch_version: "2.5.1+cu121"
+  python_version: "3.12"

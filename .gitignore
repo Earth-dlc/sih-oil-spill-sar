@@ -1,0 +1,68 @@
+# ===========================
+# Python
+# ===========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ===========================
+# Virtual Environments
+# ===========================
+.venv/
+venv/
+env/
+ENV/
+
+# ===========================
+# Model Weights & Checkpoints
+# (Large binaries — provide download link or use Git LFS)
+# ===========================
+*.pth
+*.pt
+*.onnx
+*.bin
+
+# ===========================
+# Dataset (too large for git — download from Zenodo)
+# ===========================
+dataset/
+
+# ===========================
+# Generated Outputs
+# ===========================
+reports/
+split_manifest.json
+
+# ===========================
+# IDE / Editor
+# ===========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ===========================
+# OS Files
+# ===========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===========================
+# Node.js (orphan — not used in this project)
+# ===========================
+node_modules/
+package-lock.json
+package.json
+
+# ===========================
+# Misc
+# ===========================
+*.log
+.env
+Untitled document*.pdf
